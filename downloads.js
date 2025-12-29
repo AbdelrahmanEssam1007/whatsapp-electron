@@ -3,15 +3,16 @@ const path = require("path");
 
 module.exports = function setupDownloads(session, win) {
   session.on("will-download", async (event, item) => {
-    event.preventDefault();
+    const defaultPath = path.join(app.getPath("downloads"), item.getFilename());
 
     const { canceled, filePath } = await dialog.showSaveDialog(win, {
-      defaultPath: path.join(app.getPath("downloads"), item.getFilename())
+      defaultPath: defaultPath
     });
 
-    if (!canceled && filePath) {
+    if (canceled) {
+      item.cancel();
+    } else {
       item.setSavePath(filePath);
-      item.resume();
     }
   });
 };
