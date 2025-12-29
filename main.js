@@ -1,4 +1,4 @@
-const { app, BrowserWindow, session } = require("electron");
+const { app, BrowserWindow, session, Menu } = require("electron");
 const path = require("path");
 const setupTray = require("./tray");
 const setupDownloads = require("./downloads");
@@ -37,6 +37,18 @@ function createWindow() {
   win.loadURL("https://web.whatsapp.com", { userAgent });
 
   win.once("ready-to-show", () => win.show());
+
+  // Enable right-click context menu
+  win.webContents.on("context-menu", (event, params) => {
+    const menu = Menu.buildFromTemplate([
+      { label: "Cut", role: "cut", enabled: params.editFlags.canCut },
+      { label: "Copy", role: "copy", enabled: params.editFlags.canCopy },
+      { label: "Paste", role: "paste", enabled: params.editFlags.canPaste },
+      { type: "separator" },
+      { label: "Select All", role: "selectAll" }
+    ]);
+    menu.popup();
+  });
 
   win.on("close", (event) => {
     if (!isQuitting && tray) {
