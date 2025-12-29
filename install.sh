@@ -10,6 +10,8 @@ if ! command -v node &>/dev/null; then
         sudo apt update && sudo apt install -y nodejs npm
     elif [ -f /etc/fedora-release ]; then
         sudo dnf install -y nodejs npm
+    elif [ -f /etc/arch-release ]; then
+        sudo pacman -S --noconfirm nodejs npm
     fi
 fi
 
@@ -18,7 +20,14 @@ cd "$PROJECT_PATH"
 npm install
 
 # Create .desktop
-DESKTOP_FILE="$HOME/.local/share/applications/whatsapp-electron.desktop"
+if [ -n "$XDG_DATA_HOME" ]; then
+    DESKTOP_FILE="$XDG_DATA_HOME/applications/whatsapp-electron.desktop"
+elif [ -d "$HOME/.local/share/applications" ]; then
+    DESKTOP_FILE="$HOME/.local/share/applications/whatsapp-electron.desktop"
+else
+    echo "Warning: Could not find a user applications directory. Falling back to \$HOME/.local/share/applications."
+    DESKTOP_FILE="$HOME/.local/share/applications/whatsapp-electron.desktop"
+fi
 mkdir -p "$(dirname "$DESKTOP_FILE")"
 
 cat > "$DESKTOP_FILE" <<EOF
