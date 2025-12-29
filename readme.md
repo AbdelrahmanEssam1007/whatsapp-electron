@@ -87,8 +87,9 @@ npm start
 
 ## Supported Environments
 
-- KDE Plasma (Fedora, Arch, etc.)  
-- GNOME (Debian, Ubuntu, etc.)
+- KDE Plasma (Fedora, etc.)  
+- GNOME (Debian, etc.)
+- Hyprland (Arch, etc.)
 
 ---
 
