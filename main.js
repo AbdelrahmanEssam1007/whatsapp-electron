@@ -63,4 +63,10 @@ app.whenReady().then(() => {
 });
 
 app.on("before-quit", () => isQuitting = true);
-app.on("window-all-closed", () => {});
+app.on("window-all-closed", () => {
+  // On GNOME (without tray), quit the app when window closes
+  // On other DEs (with tray), keep app running in tray
+  if (isGnome) {
+    app.quit();
+  }
+});
