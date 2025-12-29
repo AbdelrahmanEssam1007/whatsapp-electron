@@ -1,4 +1,4 @@
-const { dialog } = require("electron");
+const { app, dialog } = require("electron");
 const path = require("path");
 
 module.exports = function setupDownloads(session, win) {
@@ -6,7 +6,7 @@ module.exports = function setupDownloads(session, win) {
     event.preventDefault();
 
     const { canceled, filePath } = await dialog.showSaveDialog(win, {
-      defaultPath: path.join(win.app.getPath("downloads"), item.getFilename())
+      defaultPath: path.join(app.getPath("downloads"), item.getFilename())
     });
 
     if (!canceled && filePath) {
