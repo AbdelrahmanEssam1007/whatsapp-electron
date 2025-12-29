@@ -38,6 +38,30 @@ function createWindow() {
 
   win.once("ready-to-show", () => win.show());
 
+  win.on("focus", () => {
+    setTimeout(() => {
+      if (win && !win.isDestroyed()) {
+        win.webContents.focus();
+      }
+    }, 10);
+  });
+
+  let isUserBlur = false;
+  win.webContents.on("blur", () => {
+    if (win && !win.isDestroyed() && win.isFocused() && !isUserBlur) {
+      setTimeout(() => {
+        if (win && !win.isDestroyed() && win.isFocused()) {
+          win.webContents.focus();
+        }
+      }, 50);
+    }
+    isUserBlur = false;
+  });
+
+  win.on("blur", () => {
+    isUserBlur = true;
+  });
+
   // Enable right-click context menu
   win.webContents.on("context-menu", (event, params) => {
     const menu = Menu.buildFromTemplate([
