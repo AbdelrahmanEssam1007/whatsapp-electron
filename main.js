@@ -7,7 +7,14 @@ const setupDownloads = require("./downloads");
 const electronVersion = process.versions.electron;
 const chromeVersion = process.versions.chrome; // Electron bundled Chromium
 console.log(`Electron ${electronVersion}, Chromium ${chromeVersion}`);
+// Detect GNOME desktop environment
+const isGnome = process.env.XDG_CURRENT_DESKTOP?.includes('GNOME') || 
+                process.env.GDMSESSION?.includes('gnome') ||
+                process.env.DESKTOP_SESSION?.includes('gnome');
 
+if (isGnome) {
+  console.log('GNOME desktop detected - tray functionality disabled to prevent issues');
+}
 let win;
 let tray;
 let isQuitting = false;
@@ -32,14 +39,18 @@ function createWindow() {
   win.once("ready-to-show", () => win.show());
 
   win.on("close", (event) => {
-    if (!isQuitting) {
+    if (!isQuitting && tray) {
       event.preventDefault();
       win.hide();
     }
   });
 
   setupDownloads(session.defaultSession, win);
-  tray = setupTray(win, path.join(__dirname, "tray.png"));
+  
+  // Only setup tray if not using GNOME
+  if (!isGnome) {
+    tray = setupTray(win, path.join(__dirname, "tray.png"));
+  }
 }
 
 // KDE / GNOME icon support
