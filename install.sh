@@ -10,7 +10,6 @@ if ! command -v node &>/dev/null; then
         sudo apt update && sudo apt install -y nodejs npm
     elif [ -f /etc/fedora-release ]; then
         sudo dnf install -y nodejs npm
-    fi
     elif [ -f /etc/arch-release ]; then
         sudo pacman -S --noconfirm nodejs npm
     fi
