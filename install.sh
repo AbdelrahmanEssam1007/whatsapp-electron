@@ -33,7 +33,7 @@ mkdir -p "$(dirname "$DESKTOP_FILE")"
 cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Name=WhatsApp
-Comment=WhatsApp Web
+Comment=WhatsApp Electron Client
 Exec=npm start --prefix $PROJECT_PATH
 Icon=$PROJECT_PATH/icon.png
 Terminal=false
