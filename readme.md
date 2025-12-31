@@ -4,7 +4,7 @@ A minimal, cross-desktop Linux Electron wrapper for WhatsApp Web.
 
 Supports:
 
-- KDE and GNOME (Fedora, Debian tested)
+- KDE, GNOME, Hyprland (Fedora, Debian, Arch Tested)
 - Tray icon with toggle (close button hides to tray)
 - Right-click tray menu (Show / Quit)
 - Downloads via system file picker (Dolphin/Nautilus)
@@ -17,13 +17,17 @@ Supports:
 
 ```
 whatsapp-electron/
-├── main.js          # Entry point
-├── tray.js          # Tray setup
-├── downloads.js     # Download picker logic
+├── main.js              # Entry point
+├── src/
+│   ├── tray.js          # Tray setup
+│   └── downloads.js     # Download picker logic
+├── assets/
+│   ├── icon.png         # App icon
+│   └── tray.png         # Tray icon
 ├── package.json
-├── icon.png         # App icon
-├── tray.png         # Tray icon
-├── install.sh       # Builder / installer
+├── install.sh           # Builder / installer
+├── update.sh            # Update script
+├── uninstall.sh         # Uninstaller
 ├── .gitignore
 └── README.md
 ```
@@ -72,8 +76,8 @@ npm start
 ## Development
 
 - Modular structure makes it easy to add features:  
-  - `tray.js` → tray logic  
-  - `downloads.js` → download handling  
+  - `src/tray.js` → tray logic  
+  - `src/downloads.js` → download handling  
   - `main.js` → entry point
 
 - To run locally for development:

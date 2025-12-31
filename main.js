@@ -1,7 +1,7 @@
-const { app, BrowserWindow, session, Menu } = require("electron");
+const { app, BrowserWindow, session, Menu, shell } = require("electron");
 const path = require("path");
-const setupTray = require("./tray");
-const setupDownloads = require("./downloads");
+const setupTray = require("./src/tray");
+const setupDownloads = require("./src/downloads");
 
 // Get Electron’s Chromium version
 const electronVersion = process.versions.electron;
@@ -23,7 +23,8 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1100,
     height: 800,
-    icon: path.join(__dirname, "icon.png"),
+    icon: path.join(__dirname, "assets", "icon.png"),
+    autoHideMenuBar: true,
     show: false,
     webPreferences: {
       nodeIntegration: false,
@@ -37,6 +38,22 @@ function createWindow() {
   win.loadURL("https://web.whatsapp.com", { userAgent });
 
   win.once("ready-to-show", () => win.show());
+
+  // Open external links in default browser
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith("https://") || url.startsWith("http://")) {
+      shell.openExternal(url);
+    }
+    return { action: "deny" };
+  });
+
+  // Handle navigation to external URLs
+  win.webContents.on("will-navigate", (event, url) => {
+    if (!url.startsWith("https://web.whatsapp.com")) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
 
   // Enable right-click context menu
   win.webContents.on("context-menu", (event, params) => {
@@ -53,7 +70,7 @@ function createWindow() {
   win.on("close", (event) => {
     if (!isQuitting && tray) {
       event.preventDefault();
-      win.hide();
+      win.close();
     }
   });
 
@@ -61,7 +78,7 @@ function createWindow() {
   
   // Only setup tray if not using GNOME
   if (!isGnome) {
-    tray = setupTray(win, path.join(__dirname, "tray.png"));
+    tray = setupTray(win, path.join(__dirname, "assets", "tray.png"));
   }
 }
 

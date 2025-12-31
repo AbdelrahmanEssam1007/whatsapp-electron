@@ -35,7 +35,7 @@ cat > "$DESKTOP_FILE" <<EOF
 Name=WhatsApp
 Comment=WhatsApp Electron Client
 Exec=npm start --prefix $PROJECT_PATH
-Icon=$PROJECT_PATH/icon.png
+Icon=$PROJECT_PATH/assets/icon.png
 Terminal=false
 Type=Application
 Categories=Network;Chat;
