@@ -4,11 +4,11 @@ A minimal, cross-desktop Linux Electron wrapper for WhatsApp Web.
 
 Supports:
 
-- KDE, GNOME, Hyprland (Fedora, Debian, Arch Tested)
+- KDE, GNOME, Hyprland (Fedora, Debian, Arch tested)
 - Tray icon with toggle (close button hides to tray)
 - Right-click tray menu (Show / Quit)
-- Downloads via system file picker (Dolphin/Nautilus)
-- Dynamic app icon
+- Downloads via system file picker
+- Dynamic app icon (WIP)
 - Portable, modular, and Git-friendly
 
 ---
