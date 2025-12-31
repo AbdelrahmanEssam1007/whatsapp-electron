@@ -39,28 +39,12 @@ function createWindow() {
 
   win.once("ready-to-show", () => win.show());
 
+  // Ensure webContents gets focus when window gains focus
+  // This works with Electron's natural focus handling instead of against it
   win.on("focus", () => {
-    setTimeout(() => {
-      if (win && !win.isDestroyed()) {
-        win.webContents.focus();
-      }
-    }, 10);
-  });
-
-  let isUserBlur = false;
-  win.webContents.on("blur", () => {
-    if (win && !win.isDestroyed() && win.isFocused() && !isUserBlur) {
-      setTimeout(() => {
-        if (win && !win.isDestroyed() && win.isFocused()) {
-          win.webContents.focus();
-        }
-      }, 50);
+    if (win && !win.isDestroyed()) {
+      win.webContents.focus();
     }
-    isUserBlur = false;
-  });
-
-  win.on("blur", () => {
-    isUserBlur = true;
   });
 
   // Open external links in default browser
