@@ -1,39 +1,33 @@
 const { app, dialog } = require("electron");
 const path = require("path");
 
-let isDialogOpen = false;
+let pendingDownloadPath = null;
 
 module.exports = function setupDownloads(session, win) {
   session.on("will-download", async (event, item) => {
-    // Prevent duplicate dialogs - check and set synchronously
-    if (isDialogOpen) {
-      item.cancel();
+    // If we have a pending path (from our restarted download), use it
+    if (pendingDownloadPath) {
+      item.setSavePath(pendingDownloadPath);
+      pendingDownloadPath = null;
       return;
     }
-    isDialogOpen = true;
-
-    event.preventDefault();
-
+    
+    // Cancel the default download to prevent default dialog
+    item.cancel();
+    
     const defaultPath = path.join(app.getPath("downloads"), item.getFilename());
     const url = item.getURL();
 
-    try {
-      const { canceled, filePath } = await dialog.showSaveDialog(win, {
-        defaultPath: defaultPath
-      });
+    const { canceled, filePath } = await dialog.showSaveDialog(win, {
+      defaultPath: defaultPath
+    });
 
-      if (!canceled && filePath) {
-        // Start a fresh download with the chosen path
-        win.webContents.downloadURL(url);
-        session.once("will-download", (e, newItem) => {
-          newItem.setSavePath(filePath);
-        });
-      }
-    } finally {
-      // Small delay to prevent race conditions
-      setTimeout(() => {
-        isDialogOpen = false;
-      }, 500);
+    if (!canceled && filePath) {
+      // Store the path for the restarted download
+      pendingDownloadPath = filePath;
+      
+      // Start a new download - it will trigger will-download again with our path
+      win.webContents.downloadURL(url);
     }
   });
 };
