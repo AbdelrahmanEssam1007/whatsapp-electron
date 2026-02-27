@@ -75,11 +75,8 @@ function createWindow() {
     menu.popup();
   });
 
-  win.on("close", (event) => {
-    if (!isQuitting && tray) {
-      event.preventDefault();
-      win.close();
-    }
+  win.on("close", () => {
+    app.quit();
   });
 
   setupDownloads(session.defaultSession, win);
@@ -99,7 +96,13 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-app.on("before-quit", () => isQuitting = true);
+app.on("before-quit", () => {
+  isQuitting = true;
+  if (tray && !tray.isDestroyed()) {
+    tray.destroy();
+    tray = null;
+  }
+});
 app.on("window-all-closed", () => {
   // On GNOME (without tray), quit the app when window closes
   // On other DEs (with tray), keep app running in tray
