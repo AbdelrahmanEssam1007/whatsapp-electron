@@ -63,18 +63,6 @@ function createWindow() {
     }
   });
 
-  // Enable right-click context menu
-  win.webContents.on("context-menu", (event, params) => {
-    const menu = Menu.buildFromTemplate([
-      { label: "Cut", role: "cut", enabled: params.editFlags.canCut },
-      { label: "Copy", role: "copy", enabled: params.editFlags.canCopy },
-      { label: "Paste", role: "paste", enabled: params.editFlags.canPaste },
-      { type: "separator" },
-      { label: "Select All", role: "selectAll" }
-    ]);
-    menu.popup();
-  });
-
   win.on("close", () => {
     app.quit();
   });
