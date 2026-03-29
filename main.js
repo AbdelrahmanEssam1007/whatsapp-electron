@@ -17,8 +17,6 @@ if (isGnome) {
 }
 let win;
 let tray;
-let isQuitting = false;
-
 function createWindow() {
   win = new BrowserWindow({
     width: 1100,
@@ -63,10 +61,6 @@ function createWindow() {
     }
   });
 
-  win.on("close", () => {
-    app.quit();
-  });
-
   setupDownloads(session.defaultSession, win);
   
   // Only setup tray if not using GNOME
@@ -85,16 +79,12 @@ app.whenReady().then(() => {
 });
 
 app.on("before-quit", () => {
-  isQuitting = true;
   if (tray && !tray.isDestroyed()) {
     tray.destroy();
     tray = null;
   }
 });
 app.on("window-all-closed", () => {
-  // On GNOME (without tray), quit the app when window closes
-  // On other DEs (with tray), keep app running in tray
-  if (isGnome) {
-    app.quit();
-  }
+  // Ensure consistent behavior: close button fully exits the app on Linux.
+  app.quit();
 });
