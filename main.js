@@ -85,6 +85,7 @@ app.on("before-quit", () => {
   }
 });
 app.on("window-all-closed", () => {
-  // Ensure consistent behavior: close button fully exits the app on Linux.
+  // Ensure consistent behavior: close button fully exits the app on Linux.\
+  process.exit(0); // Force exit to prevent lingering processes
   app.quit();
 });
