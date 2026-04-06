@@ -5,11 +5,9 @@ A minimal, cross-desktop Linux Electron wrapper for WhatsApp Web.
 Supports:
 
 - KDE, GNOME, Hyprland (Fedora, Debian, Arch tested)
-- Tray icon with toggle (close button hides to tray)
 - Right-click tray menu (Show / Quit)
 - Downloads via system file picker
 - Dynamic app icon (WIP)
-- Portable, modular, and Git-friendly
 
 ---
 
@@ -39,7 +37,7 @@ whatsapp-electron/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/whatsapp-electron.git
+git clone https://github.com/codujin/whatsapp-electron.git
 cd whatsapp-electron
 ```
 
@@ -96,14 +94,7 @@ npm start
 - Hyprland (Arch, etc.)
 
 ---
-
-## Contributing
-
-Feel free to fork the repository, submit PRs, or open issues for bug reports and feature requests.
-
----
-
 ## License
 
-MIT License
+GPL v2
 
