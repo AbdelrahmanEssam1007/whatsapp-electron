@@ -54,6 +54,22 @@ This will:
 - Install project dependencies
 - Create a `.desktop` file for your system
 
+If you are an Ubuntu user, or you see the Electron sandbox error below:
+
+```text
+The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /home/abdo/whatsapp-electron/node_modules/electron/dist/chrome-sandbox is owned by root and has mode 4755.
+/home/abdo/whatsapp-electron/node_modules/electron/dist/electron exited with signal SIGTRAP
+```
+
+Run this first:
+
+```bash
+echo "kernel.apparmor_restrict_unprivileged_userns=0" | sudo tee /etc/sysctl.d/60-apparmor-namespace.conf
+sudo sysctl -p /etc/sysctl.d/60-apparmor-namespace.conf
+```
+
+This disables Ubuntu's AppArmor restriction on unprivileged user namespaces, which can block Electron's sandbox from starting correctly.
+
 3. Launch WhatsApp from your app menu or via terminal:
 
 ```bash
@@ -68,6 +84,7 @@ npm start
 - Click the tray icon → show/hide window  
 - Right-click tray → menu (Show / Quit)  
 - Downloads → system file picker dialog
+- If you hit the sandbox/AppArmor error on Ubuntu, run the commands above before starting the app.
 
 ---
 
