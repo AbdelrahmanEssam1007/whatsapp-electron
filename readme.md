@@ -1,4 +1,4 @@
-# WhatsApp Electron Wrapper
+  # WhatsApp Electron Wrapper
 
 A minimal, cross-desktop Linux Electron wrapper for WhatsApp Web.  
 
@@ -57,15 +57,16 @@ This will:
 If you are an Ubuntu user, or you see the Electron sandbox error below:
 
 ```text
-The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /home/abdo/whatsapp-electron/node_modules/electron/dist/chrome-sandbox is owned by root and has mode 4755.
-/home/abdo/whatsapp-electron/node_modules/electron/dist/electron exited with signal SIGTRAP
+The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /path/to/whatsapp-electron/node_modules/electron/dist/chrome-sandbox is owned by root and has mode 4755.
+/path/to/whatsapp-electron/node_modules/electron/dist/electron exited with signal SIGTRAP
 ```
 
 Run this first:
 
 ```bash
-echo "kernel.apparmor_restrict_unprivileged_userns=0" | sudo tee /etc/sysctl.d/60-apparmor-namespace.conf
-sudo sysctl -p /etc/sysctl.d/60-apparmor-namespace.conf
+sudo chown root:root "$PWD/node_modules/electron/dist/chrome-sandbox"
+
+sudo chmod 4755 "$PWD/node_modules/electron/dist/chrome-sandbox"
 ```
 
 This disables Ubuntu's AppArmor restriction on unprivileged user namespaces, which can block Electron's sandbox from starting correctly.
