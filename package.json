@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-electron",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^41.1.0"
+    "electron": "^42.1.0"
   }
 }
