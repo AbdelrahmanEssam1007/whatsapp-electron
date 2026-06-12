@@ -34,7 +34,8 @@ cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Name=WhatsApp
 Comment=WhatsApp Electron Client
-Exec=npm start --prefix $PROJECT_PATH
+# MANGOHUD_FIX: remove 'env MANGOHUD=0' once mangohud >0.8.3~rc1 lands in Fedora repos,
+Exec=env MANGOHUD=0 npm start --prefix $PROJECT_PATH
 Icon=$PROJECT_PATH/assets/icon.png
 Terminal=false
 Type=Application
