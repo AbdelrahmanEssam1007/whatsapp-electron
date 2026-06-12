@@ -55,16 +55,6 @@ function createWindow() {
     return { action: "deny" };
   });
 
-  // apparently this does nothing, will uncomment it when shit breaks.
-
-  // Handle navigation to external URLs
-  // win.webContents.on("will-navigate", (event, url) => {
-  //   if (!url.startsWith("https://web.whatsapp.com")) {
-  //     event.preventDefault();
-  //     shell.openExternal(url);
-  //   }
-  // });
-
   setupDownloads(session.defaultSession, win);
   
   // Only setup tray if not using GNOME
@@ -88,13 +78,14 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-// this is probably one of the worst hacks I've ever done, but it is what it is. and javascript is a horrible language, so it fits.
-app.on("before-quit", () => {
+// kde fucking sucks and breaks every 2 weeks
+// latest update doesn't even react to clicking the tray nor close button
+// this is a temporary solution until I can figure out how to properly fix it
+// or until kde breaks so much that I don't care about it anymore, which is probably going to be sooner than the first option
+app.on("quit", () => {
   if (tray && !tray.isDestroyed()) {
     tray.destroy();
     tray = null;
   }
-});
-app.on("window-all-closed", () => {
   process.exit(0); // this is probably not the way to do it, but it's the only way I got to completely exit in kde 
 });
